@@ -12,11 +12,43 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import CustomCalendar from "../Employees/CustomCalendar";
+import openRequest from "../../services/indexDB";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const AddEmployee = ({ open, handleClose }) => {
+  const [formValues, setFormValues] = React.useState({
+    name: "",
+    role: "",
+    date: "",
+  });
+
+  const handleChange = (e) => {
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value,
+    });
+  };
+  console.log("formValues", formValues);
+
+  const handleAddData = () => {
+    const db = openRequest.result;
+    const transaction = db.transaction(["myObjectStore"], "readwrite");
+    const store = transaction.objectStore("myObjectStore");
+
+    // const dataToAdd = { name, role, date };
+    const request = store.add(formValues);
+
+    request.onsuccess = function (event) {
+      console.log("Data added successfully");
+    };
+
+    request.onerror = function (event) {
+      console.error("Error adding data", event.target.error);
+    };
+  };
+
   return (
     <div>
       {/* <DenseAppBar title="Add Employee Details" /> */}
@@ -26,6 +58,7 @@ const AddEmployee = ({ open, handleClose }) => {
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
+        sx={{ height: "50vh" }}
       >
         <DialogTitle>{"Use Google's location service?"}</DialogTitle>
         <DialogContent>
@@ -50,12 +83,16 @@ const AddEmployee = ({ open, handleClose }) => {
               variant="outlined"
               sx={{ mt: 4 }}
               size="small"
+              name="name"
+              onChange={handleChange}
             />
             <TextField
               id="outlined-select-currency"
               select
               label="Select Role"
               size="small"
+              name="role"
+              onChange={handleChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -84,7 +121,7 @@ const AddEmployee = ({ open, handleClose }) => {
           <Button onClick={handleClose} variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleClose} variant="contained">
+          <Button onClick={handleAddData} variant="contained">
             Save
           </Button>
         </DialogActions>
