@@ -50,6 +50,7 @@ const ItemWrapper = styled("div")({
   display: "flex",
   //   backgroundColor: "lightgray",
   transition: "transform 800ms",
+  // cursor: "pointer",
 });
 
 const DeleteButton = styled("button")({
@@ -62,14 +63,36 @@ const DeleteButton = styled("button")({
   minWidth: "85px",
 });
 
-const SwipeCard = ({ item, onDelete }) => {
+const SwipeCard = ({
+  item,
+  onDelete,
+  setOpen,
+  setFormValues,
+  setSelectedUser,
+  setEditUser,
+}) => {
   return (
     <Box sx={{ padding: "0.5rem 1rem" }}>
       <Wrapper>
         <Stack sx={{ padding: "0rem 0 0 1rem" }}>
-          <Item key={item.id}>
+          <Item key={item.id + 3}>
             <div style={{ flex: "1 0 100%" }}>
-              <p style={{ margin: "0.2rem" }}>{item.name}</p>
+              <span
+                style={{ margin: "0.2rem", cursor: "pointer" }}
+                onClick={() => {
+                  setOpen(true);
+                  setFormValues({
+                    name: item.name,
+                    role: item.role,
+                    date: "",
+                  });
+                  setSelectedUser(item);
+                  setEditUser(true);
+                }}
+              >
+                {item.name}
+              </span>
+              <br />
               <span style={{ fontSize: "0.8rem", color: "gray" }}>
                 {item.role}
               </span>

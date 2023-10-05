@@ -17,13 +17,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AddEmployee = ({ open, handleClose }) => {
-  const [formValues, setFormValues] = React.useState({
-    name: "",
-    role: "",
-    date: "",
-  });
-
+const AddEmployee = ({
+  open,
+  handleClose,
+  handleAddData,
+  formValues,
+  setFormValues,
+}) => {
   const handleChange = (e) => {
     setFormValues({
       ...formValues,
@@ -31,23 +31,6 @@ const AddEmployee = ({ open, handleClose }) => {
     });
   };
   console.log("formValues", formValues);
-
-  const handleAddData = () => {
-    const db = openRequest.result;
-    const transaction = db.transaction(["myObjectStore"], "readwrite");
-    const store = transaction.objectStore("myObjectStore");
-
-    // const dataToAdd = { name, role, date };
-    const request = store.add(formValues);
-
-    request.onsuccess = function (event) {
-      console.log("Data added successfully");
-    };
-
-    request.onerror = function (event) {
-      console.error("Error adding data", event.target.error);
-    };
-  };
 
   return (
     <div>
@@ -85,6 +68,7 @@ const AddEmployee = ({ open, handleClose }) => {
               size="small"
               name="name"
               onChange={handleChange}
+              defaultValue={formValues.name}
             />
             <TextField
               id="outlined-select-currency"
@@ -93,6 +77,7 @@ const AddEmployee = ({ open, handleClose }) => {
               size="small"
               name="role"
               onChange={handleChange}
+              defaultValue={formValues.role}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

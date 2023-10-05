@@ -1,25 +1,44 @@
-// indexedDB.js
+const idb =
+  window.indexedDB ||
+  window.mozIndexedDB ||
+  window.webkitIndexedDB ||
+  window.msIndexedDB ||
+  window.shimIndexedDB;
 
-const dbName = "myDatabase";
-const dbVersion = 1;
-
-const openRequest = indexedDB.open(dbName, dbVersion);
-
-openRequest.onupgradeneeded = function (event) {
-  const db = event.target.result;
-  if (!db.objectStoreNames.contains("myObjectStore")) {
-    db.createObjectStore("myObjectStore", { autoIncrement: true });
+export const insertDataInIndexedDb = () => {
+  //check for support
+  if (!idb) {
+    console.log("This browser doesn't support IndexedDB");
+    return;
   }
+
+  const request = idb.open("Employee", 1);
+
+  request.onerror = function (event) {
+    console.error("An error occurred with IndexedDB");
+    console.error(event);
+  };
+
+  request.onupgradeneeded = function (event) {
+    console.log(event);
+    const db = request.result;
+
+    if (!db.objectStoreNames.contains("userData")) {
+      db.createObjectStore("userData", { keyPath: "id" });
+    }
+    console.log("db.objectStoreNames", db.objectStoreNames);
+  };
+
+  request.onsuccess = function () {
+    console.log("Database opened successfully");
+
+    const db = request.result;
+
+    var tx = db.transaction("userData", "readwrite");
+    tx.objectStore("userData");
+
+    // USER_DATA.forEach((item) => userData.add(item));
+
+    return tx.complete;
+  };
 };
-
-openRequest.onsuccess = function (event) {
-  const db = event.target.result;
-
-  // You can export 'db' or use it within this module to perform operations.
-};
-
-openRequest.onerror = function (event) {
-  console.error("Error opening database", event.target.error);
-};
-
-export default openRequest;
