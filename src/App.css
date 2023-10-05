@@ -30,3 +30,84 @@
 .MuiCalendarPicker-root button {
   order: 2;
 }
+.react-datepicker__header:not(.react-datepicker__header--has-time-select) {
+  /* border-top-right-radius: 0.3rem; */
+  background: #fff;
+}
+
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range, .react-datepicker__month-text--selected, .react-datepicker__month-text--in-selecting-range, .react-datepicker__month-text--in-range, .react-datepicker__quarter-text--selected, .react-datepicker__quarter-text--in-selecting-range, .react-datepicker__quarter-text--in-range, .react-datepicker__year-text--selected, .react-datepicker__year-text--in-selecting-range, .react-datepicker__year-text--in-range {
+  border-radius: 50% !important;
+  background-color: #1DA1F2 !important;
+  color: #fff !important;
+  /* margin: 1rem; */
+}
+
+.react-datepicker__day:hover, .react-datepicker__month-text:hover, .react-datepicker__quarter-text:hover, .react-datepicker__year-text:hover {
+  border-radius: 50% !important;
+  background-color: #f0f0f0;
+}
+
+.react-datepicker__day-name, .react-datepicker__day, .react-datepicker__time-name {
+  margin: 0.5rem !important;
+}
+
+.react-datepicker__day--today, .react-datepicker__month-text--today, .react-datepicker__quarter-text--today, .react-datepicker__year-text--today {
+  font-weight: 500;
+  border-radius: 50% !important;
+  background-color: #ffffff !important;
+  color: #1DA1F2 !important;
+  border:1px solid #1DA1F2 !important;
+}
+
+.btn-check:checked + .btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check) + .btn:active {
+  color: #fff !important;
+  background-color: #1DA1F2 !important;
+  /* border-color: var(--bs-btn-active-border-color); */
+}
+
+.btn-group, .btn-group-vertical {
+  position: relative;
+  display: block !important;
+  /* vertical-align: middle; */
+}
+.btn-group > .btn-group:not(:first-child) > .btn, .btn-group > .btn:nth-child(n+3), .btn-group > :not(.btn-check) + .btn {
+  border-top-left-radius: 3px !important;
+  border-bottom-left-radius: 3px !important;
+}
+.btn-group > .btn-group:not(:last-child) > .btn, .btn-group > .btn.dropdown-toggle-split:first-child, .btn-group > .btn:not(:last-child):not(.dropdown-toggle) {
+  border-top-right-radius: 3px !important;
+  border-bottom-right-radius: 3px !important;
+}
+.toggleButton{
+  background: #EDF8FF !important;
+  border: none !important;
+  color: #1DA1F2 !important;
+}
+
+.react-datepicker__input-time-container .react-datepicker-time__caption {
+  display: none !important;
+}
+
+.react-datepicker__input-time-container .react-datepicker-time__input-container .react-datepicker-time__input {
+  display: block !important;
+  margin-left: 0px !important;
+  margin-right: 20px !important;
+}
+
+.form-control:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: none !important;
+}
+
+.react-datepicker-wrapper{
+  width: 75% !important;
+}
+.react-datepicker__input-container input{
+  border-radius: 0px !important;
+}
+
+.react-datepicker__input-time-container .react-datepicker-time__input-container {
+  display: block !important;
+
+}

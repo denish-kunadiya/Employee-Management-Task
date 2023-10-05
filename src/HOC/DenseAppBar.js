@@ -6,20 +6,17 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
-const DenseAppBar = ({ title }) => {
+const DenseAppBar = ({ title, bgcolor, color }) => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1, background: "red" }}>
+      <AppBar position="static" sx={{ background: bgcolor }}>
         <Toolbar variant="dense">
-          <IconButton
-            edge="start"
+          <Typography
+            variant="h6"
             color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
+            component="div"
+            sx={{ color: color }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
             {title}
           </Typography>
         </Toolbar>

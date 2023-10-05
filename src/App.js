@@ -4,7 +4,7 @@ import EmployeeList from "./pages/EmployeeList";
 import Employees from "./components/Employees";
 import { useEffect, useState } from "react";
 import { insertDataInIndexedDb } from "./services/indexDB";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   // const [db, setDb] = useState(null);
 

@@ -10,6 +10,9 @@ import DenseAppBar from "../../HOC/DenseAppBar";
 import AddEmployee from "../Modals/AddEmployee";
 import SwipeCard from "./SwipeCard";
 import openRequest from "../../services/indexDB";
+import dayjs from "dayjs";
+import PrevEmployee from "./PrevEmployee";
+import { Typography } from "@mui/material";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -52,15 +55,20 @@ const Employees = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [formValues, setFormValues] = React.useState({
     name: "",
-    role: "",
-    date: "",
+    role: "Product Designer",
   });
   const [selectedUser, setSelectedUser] = useState({});
-
+  const [selectedFromDate, setSelectedFromDate] = useState(new Date());
+  const [selectedToDate, setSelectedToDate] = useState(new Date());
   useEffect(() => {
     getAllData();
   }, [refresh]);
-
+  // console.log(
+  //   "selectedFromDatedddd",
+  //   dayjs(selectedToDate).format("DD MMM YYYY")
+  // );
+  console.log("dayjs(selectedFromDate)", selectedFromDate);
+  console.log("ssss", new Date(dayjs(selectedFromDate).format("DD MMM YYYY")));
   // const handleAddData = () => {
   //   const db = openRequest.result;
   //   const transaction = db.transaction(["myObjectStore"], "readwrite");
@@ -105,7 +113,11 @@ const Employees = () => {
     const dbPromise = window.indexedDB.open("Employee", 1);
     // console.log(addUser, editUser);
 
-    if (formValues) {
+    if (
+      formValues.name &&
+      formValues.role &&
+      dayjs(selectedFromDate).format("DD MMM YYYY")
+    ) {
       dbPromise.onsuccess = () => {
         const db = dbPromise.result;
 
@@ -118,6 +130,11 @@ const Employees = () => {
           const users = userData.put({
             id: allUsers?.length + 1,
             ...formValues,
+            fromDate: dayjs(selectedFromDate).format("DD MMM YYYY"),
+            toDate:
+              selectedToDate !== null
+                ? dayjs(selectedToDate).format("DD MMM YYYY")
+                : null,
           });
 
           console.log("add");
@@ -140,6 +157,11 @@ const Employees = () => {
           const users = userData.put({
             id: selectedUser?.id,
             ...formValues,
+            fromDate: dayjs(selectedFromDate).format("DD MMM YYYY"),
+            toDate:
+              selectedToDate !== null
+                ? dayjs(selectedToDate).format("DD MMM YYYY")
+                : null,
           });
           console.log("edit");
 
@@ -187,17 +209,68 @@ const Employees = () => {
   return (
     <div>
       <DenseAppBar title="Employee List" />
-      {allUsers?.map((item) => (
-        <SwipeCard
-          key={item.id}
-          item={item}
-          onDelete={handleDelete}
-          setOpen={setOpen}
-          setFormValues={setFormValues}
-          setSelectedUser={setSelectedUser}
-          setEditUser={setEditUser}
-        />
-      ))}
+      {allUsers?.filter((i) => i.toDate === null).length ? (
+        <Typography
+          variant="h6"
+          color="inherit"
+          component="div"
+          sx={{ color: "#1DA1F2", background: "#d3d3d321", px: 3 }}
+        >
+          Current Employee
+        </Typography>
+      ) : (
+        ""
+      )}
+      {allUsers
+        ?.filter((i) => i.toDate == null)
+        ?.map((item) => (
+          <SwipeCard
+            key={item.id}
+            item={item}
+            onDelete={handleDelete}
+            setOpen={setOpen}
+            setFormValues={setFormValues}
+            setSelectedUser={setSelectedUser}
+            setEditUser={setEditUser}
+            setSelectedFromDate={setSelectedFromDate}
+            setSelectedToDate={setSelectedToDate}
+            selectedFromDate={selectedFromDate}
+            selectedToDate={selectedToDate}
+          />
+        ))}
+
+      {allUsers?.filter((i) => i.toDate !== null || i.toDate !== "Invalid Date")
+        .length ? (
+        <>
+          <Typography
+            variant="h6"
+            color="inherit"
+            component="div"
+            sx={{ color: "#1DA1F2", background: "#d3d3d321", px: 3 }}
+          >
+            Previous employee
+          </Typography>
+          {allUsers
+            ?.filter((i) => i.toDate !== null && i.toDate !== "Invalid Date")
+            ?.map((item) => (
+              <PrevEmployee
+                key={item.id}
+                item={item}
+                onDelete={handleDelete}
+                setOpen={setOpen}
+                setFormValues={setFormValues}
+                setSelectedUser={setSelectedUser}
+                setEditUser={setEditUser}
+                setSelectedFromDate={setSelectedFromDate}
+                setSelectedToDate={setSelectedToDate}
+                selectedFromDate={selectedFromDate}
+                selectedToDate={selectedToDate}
+              />
+            ))}
+        </>
+      ) : (
+        ""
+      )}
       <Toolbar>
         <Box position="fixed" sx={{ top: "auto", bottom: 50, right: 100 }}>
           <StyledFab color="primary" aria-label="add">
@@ -214,10 +287,23 @@ const Employees = () => {
       {open && (
         <AddEmployee
           open={open}
-          handleClose={() => setOpen(false)}
+          handleClose={() => {
+            setOpen(false);
+            setEditUser(false);
+            setAddUser(true);
+            setFormValues({
+              name: "",
+              role: "",
+            });
+          }}
           handleAddData={handleAddData}
           setFormValues={setFormValues}
           formValues={formValues}
+          selectedFromDate={selectedFromDate}
+          setSelectedFromDate={setSelectedFromDate}
+          selectedToDate={selectedToDate}
+          setSelectedToDate={setSelectedToDate}
+          addUser={addUser}
         />
       )}
     </div>

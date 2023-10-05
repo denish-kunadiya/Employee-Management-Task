@@ -7,12 +7,24 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import DenseAppBar from "../../HOC/DenseAppBar";
-import { TextField, InputAdornment, MenuItem, Box } from "@mui/material";
+import {
+  TextField,
+  InputAdornment,
+  MenuItem,
+  Box,
+  Typography,
+} from "@mui/material";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import CustomCalendar from "../Employees/CustomCalendar";
+import CustomCalendar from "../Employees/ToDateCalendar";
 import openRequest from "../../services/indexDB";
+import CustomCalendarDesing from "../Employees/CustomCalendarDesing";
+import { Col, Form, InputGroup, Row } from "react-bootstrap";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
+import ToDateCalendar from "../Employees/ToDateCalendar";
+import SouthIcon from "@mui/icons-material/South";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -23,6 +35,11 @@ const AddEmployee = ({
   handleAddData,
   formValues,
   setFormValues,
+  selectedFromDate,
+  setSelectedFromDate,
+  selectedToDate,
+  setSelectedToDate,
+  addUser,
 }) => {
   const handleChange = (e) => {
     setFormValues({
@@ -41,10 +58,18 @@ const AddEmployee = ({
         keepMounted
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
-        sx={{ height: "50vh" }}
+        fullWidth
+        fullScreen="lg"
       >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
+        <DialogTitle>
+          <Typography>
+            {!formValues.name
+              ? "Add Employee Details"
+              : "Edit Employee Details"}
+          </Typography>
+          <Typography></Typography>
+        </DialogTitle>
+        <DialogContent sx={{ height: "80vh" }}>
           <Box
             component="form"
             sx={{
@@ -53,54 +78,77 @@ const AddEmployee = ({
             noValidate
             autoComplete="off"
           >
-            <TextField
-              id="input-with-icon-textfield"
-              label="Employee Name"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PersonOutlineIcon sx={{ color: "#1565c0" }} />
-                  </InputAdornment>
-                ),
-              }}
-              variant="outlined"
-              sx={{ mt: 4 }}
-              size="small"
-              name="name"
-              onChange={handleChange}
-              defaultValue={formValues.name}
-            />
-            <TextField
-              id="outlined-select-currency"
-              select
-              label="Select Role"
-              size="small"
-              name="role"
-              onChange={handleChange}
-              defaultValue={formValues.role}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <WorkOutlineIcon sx={{ color: "#1565c0" }} />
-                  </InputAdornment>
-                ),
-              }}
-            >
-              <MenuItem key="" value="Product Designer">
-                Product Designer
-              </MenuItem>
-              <MenuItem key="" value="Flutter Developer">
-                Flutter Developer
-              </MenuItem>
-              <MenuItem key="" value="QA Tester">
-                QA Tester
-              </MenuItem>
-              <MenuItem key="" value="Product Owner">
-                Product Owner
-              </MenuItem>
-            </TextField>
-            <CustomCalendar />
+            <div class="row">
+              <div class="col-12">
+                <InputGroup className="mb-3">
+                  <InputGroup.Text id="basic-addon1">
+                    <PersonOutlineIcon sx={{ color: "#1DA1F2" }} />
+                  </InputGroup.Text>
+                  <Form.Control
+                    placeholder="Employee Name"
+                    aria-label="Employee Name"
+                    aria-describedby="basic-addon1"
+                    onChange={handleChange}
+                    defaultValue={formValues.name}
+                    name="name"
+                  />
+                </InputGroup>
+              </div>
+
+              <div class="col-12">
+                <div class="input-group select-group">
+                  <span class="input-group-addon input-group-text">
+                    <WorkOutlineIcon sx={{ color: "#1DA1F2" }} />
+                  </span>
+                  <select
+                    class="form-control"
+                    defaultValue={formValues.role}
+                    onChange={handleChange}
+                    name="role"
+                  >
+                    <option key="" value="Product Designer">
+                      Product Designer
+                    </option>
+                    <option key="" value="Flutter Developer">
+                      Flutter Developer
+                    </option>
+                    <option key="" value="QA Tester">
+                      QA Tester
+                    </option>
+                    <option key="" value="Product Owner">
+                      Product Owner
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </Box>
+          <div class="row mt-3">
+            <div class="col-12 col-md-5">
+              <CustomCalendarDesing
+                selectedFromDate={selectedFromDate}
+                setSelectedFromDate={setSelectedFromDate}
+              />
+            </div>
+            <div class="col-12 col-md-1">
+              <TrendingFlatIcon
+                sx={{ color: "#1565c0" }}
+                className="d-none d-md-block"
+              />
+            </div>
+            <div class="col-12 d-flex justify-content-center d-block d-md-none">
+              <SouthIcon
+                sx={{ color: "#1565c0" }}
+                className="d-block d-md-none"
+              />
+            </div>
+            <div class="col-12 col-md-6">
+              <ToDateCalendar
+                selectedToDate={selectedToDate}
+                setSelectedToDate={setSelectedToDate}
+              />
+            </div>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="outlined">

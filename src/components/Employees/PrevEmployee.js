@@ -63,7 +63,7 @@ const DeleteButton = styled("button")({
   minWidth: "85px",
 });
 
-const SwipeCard = ({
+const PrevEmployee = ({
   item,
   onDelete,
   setOpen,
@@ -77,49 +77,53 @@ const SwipeCard = ({
 }) => {
   return (
     <Box sx={{ padding: "0.5rem 1rem" }}>
-      <>
-        <Wrapper>
-          <Stack sx={{ padding: "0rem 0 0 1rem" }}>
-            <Item key={item.id + 3}>
-              <div style={{ flex: "1 0 100%" }}>
-                <span
-                  style={{ margin: "0.2rem", cursor: "pointer" }}
-                  onClick={() => {
-                    setOpen(true);
-                    setFormValues({
-                      name: item.name,
-                      role: item.role,
-                    });
-                    setSelectedFromDate(item.fromDate);
-                    setSelectedToDate(item.toDate);
-                    setSelectedUser(item);
-                    setEditUser(true);
-                  }}
-                >
-                  {item.name}
-                </span>
-                <br />
-                <span style={{ fontSize: "0.8rem", color: "gray" }}>
-                  {item.role}
-                </span>
-                <br />
-                <span style={{ fontSize: "0.8rem", color: "gray" }}>
-                  {item.fromDate}
-                </span>
-              </div>
-              <DeleteButton>
-                <DeleteIcon
-                  sx={{ color: "#ffffff", cursor: "pointer" }}
-                  onClick={() => onDelete(item.id)}
-                />
-              </DeleteButton>
-            </Item>
-          </Stack>
-        </Wrapper>
-        <Divider variant="middle" />
-      </>
+      {selectedToDate !== null || selectedToDate !== "Invalid Date" ? (
+        <>
+          <Wrapper>
+            <Stack sx={{ padding: "0rem 0 0 1rem" }}>
+              <Item key={item.id + 3}>
+                <div style={{ flex: "1 0 100%" }}>
+                  <span
+                    style={{ margin: "0.2rem", cursor: "pointer" }}
+                    onClick={() => {
+                      setOpen(true);
+                      setFormValues({
+                        name: item.name,
+                        role: item.role,
+                      });
+                      setSelectedFromDate(new Date(item.fromDate));
+                      setSelectedToDate(new Date(item.toDate));
+                      setSelectedUser(item);
+                      setEditUser(true);
+                    }}
+                  >
+                    {item.name}
+                  </span>
+                  <br />
+                  <span style={{ fontSize: "0.8rem", color: "gray" }}>
+                    {item.role}
+                  </span>
+                  <br />
+                  <span style={{ fontSize: "0.8rem", color: "gray" }}>
+                    {item.fromDate} - {item.toDate}
+                  </span>
+                </div>
+                <DeleteButton>
+                  <DeleteIcon
+                    sx={{ color: "#ffffff", cursor: "pointer" }}
+                    onClick={() => onDelete(item.id)}
+                  />
+                </DeleteButton>
+              </Item>
+            </Stack>
+          </Wrapper>
+          <Divider variant="middle" />
+        </>
+      ) : (
+        ""
+      )}
     </Box>
   );
 };
 
-export default SwipeCard;
+export default PrevEmployee;
