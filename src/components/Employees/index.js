@@ -210,15 +210,12 @@ const Employees = () => {
           ))
       ) : (
         <div>
-          <Row>
-            <Col
-              md={12}
-              className="d-flex justify-content-center align-items-center"
-              style={{ height: "90vh" }}
-            >
-              <h5 className="text-muted">No Records Found</h5>
-            </Col>
-          </Row>
+          <h5
+            className="d-flex justify-content-center align-items-center gx-2 text-muted"
+            style={{ height: "90vh" }}
+          >
+            No Records Found
+          </h5>
         </div>
       )}
 
