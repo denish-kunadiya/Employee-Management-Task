@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { isToday } from "date-fns";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 // import { timeBoxes } from "./timeBoxes";
@@ -14,6 +13,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 export default function CustomCalendarDesing({
   selectedFromDate,
   setSelectedFromDate,
+  selectedUser,
 }) {
   const MAX_DATE_MONTH_SELECTION = 2000;
 
@@ -93,6 +93,10 @@ export default function CustomCalendarDesing({
 
   const handleCancel = () => {
     setSelectedFromDate(new Date());
+    handleCalendarClose();
+  };
+  const handleDay = () => {
+    const today = new Date();
   };
   return (
     <div className="App">
@@ -105,15 +109,9 @@ export default function CustomCalendarDesing({
           selected={selectedFromDate}
           onChange={(date) => {
             setSelectedFromDate(date);
-            console.log("date", date);
           }}
           style={{ borderRadius: "0px" }}
           className="form-control"
-          onMonthChange={(date) => {
-            // setSelectedFromDate(date);
-            // setSelectedTime(null);
-            // console.log("date", date);
-          }}
           ref={datePickerRef}
           onCalendarClose={handleCalendarClose}
           shouldCloseOnSelect={false}

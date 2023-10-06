@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { isToday } from "date-fns";
 import dayjs from "dayjs";
 import DatePicker from "react-datepicker";
 // import { timeBoxes } from "./timeBoxes";
@@ -11,7 +10,11 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { Col, Row, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 import { Button } from "@mui/material";
 
-const ToDateCalendar = ({ selectedToDate, setSelectedToDate }) => {
+const ToDateCalendar = ({
+  selectedToDate,
+  setSelectedToDate,
+  selectedUser,
+}) => {
   //   const [selectedToDate, setSelectedToDate] = useState(new Date());
 
   const CustomTimeInput = ({
@@ -72,8 +75,8 @@ const ToDateCalendar = ({ selectedToDate, setSelectedToDate }) => {
   };
   const handleCancel = () => {
     setSelectedToDate(new Date());
+    handleCalendarClose();
   };
-
   return (
     <div className="App">
       <div class="input-group">
@@ -82,19 +85,17 @@ const ToDateCalendar = ({ selectedToDate, setSelectedToDate }) => {
         </span>
 
         <DatePicker
-          selected={selectedToDate}
+          selected={
+            dayjs(selectedToDate).format("DD MMM YYYY") === "01 Jan 1970"
+              ? null
+              : selectedToDate
+          }
           onChange={(date) => {
             setSelectedToDate(date);
-            console.log("date", date);
           }}
           ref={datePickerRef}
           placeholderText="No Date"
           className="form-control"
-          onMonthChange={(date) => {
-            // setSelectedToDate(date);
-            // setSelectedTime(null);
-            // console.log("date", date);
-          }}
           shouldCloseOnSelect={false}
           onCalendarClose={handleCalendarClose}
           showTimeInput
@@ -114,12 +115,12 @@ const ToDateCalendar = ({ selectedToDate, setSelectedToDate }) => {
                       <ToggleButtonGroup
                         type="radio"
                         name="options"
-                        defaultValue={1}
+                        defaultValue={selectedUser.toDate === null ? 1 : null}
                         style={{ maxWidth: 300 }}
                       >
                         <ToggleButton
                           id="tbg-radio-2"
-                          value={2}
+                          value={1}
                           style={{ width: 130, margin: "0.5rem" }}
                           className="toggleButton"
                           onClick={handleNextMondayClick}
@@ -128,7 +129,7 @@ const ToDateCalendar = ({ selectedToDate, setSelectedToDate }) => {
                         </ToggleButton>
                         <ToggleButton
                           id="tbg-radio-1"
-                          value={1}
+                          value={2}
                           style={{ width: 130, margin: "0.5rem" }}
                           className="toggleButton"
                           onClick={handleTodayClick}

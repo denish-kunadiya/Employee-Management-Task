@@ -5,7 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Fab from "@mui/material/Fab";
 
 import AddIcon from "@mui/icons-material/Add";
-import { v4 as uuidv4 } from "uuid";
+
 import DenseAppBar from "../../HOC/DenseAppBar";
 import AddEmployee from "../Modals/AddEmployee";
 import SwipeCard from "./SwipeCard";
@@ -13,6 +13,7 @@ import openRequest from "../../services/indexDB";
 import dayjs from "dayjs";
 import PrevEmployee from "./PrevEmployee";
 import { Typography } from "@mui/material";
+import { Col, Row } from "react-bootstrap";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -63,31 +64,6 @@ const Employees = () => {
   useEffect(() => {
     getAllData();
   }, [refresh]);
-  // console.log(
-  //   "selectedFromDatedddd",
-  //   dayjs(selectedToDate).format("DD MMM YYYY")
-  // );
-  console.log("dayjs(selectedFromDate)", selectedFromDate);
-  console.log("ssss", new Date(dayjs(selectedFromDate).format("DD MMM YYYY")));
-  // const handleAddData = () => {
-  //   const db = openRequest.result;
-  //   const transaction = db.transaction(["myObjectStore"], "readwrite");
-  //   const store = transaction.objectStore("myObjectStore");
-
-  //   // const dataToAdd = { name, role, date };
-  //   const id = uuidv4();
-  //   const request = store.add(...formValues, id);
-
-  //   request.onsuccess = function (event) {
-  //     console.log("Data added successfully");
-  //     setRefresh(refresh + 1);
-  //     setOpen(false);
-  //   };
-
-  //   request.onerror = function (event) {
-  //     console.error("Error adding data", event.target.error);
-  //   };
-  // };
 
   const getAllData = () => {
     const dbPromise = window.indexedDB.open("Employee", 1);
@@ -99,7 +75,6 @@ const Employees = () => {
       const users = userData.getAll();
 
       users.onsuccess = (query) => {
-        console.log("query.srcElement", query.srcElement);
         setAllUsers(query.srcElement.result);
       };
 
@@ -108,10 +83,8 @@ const Employees = () => {
       };
     };
   };
-  console.log("allUsers", allUsers);
   const handleAddData = (event) => {
     const dbPromise = window.indexedDB.open("Employee", 1);
-    // console.log(addUser, editUser);
 
     if (
       formValues.name &&
@@ -124,8 +97,6 @@ const Employees = () => {
         var tx = db.transaction("userData", "readwrite");
         var userData = tx.objectStore("userData");
 
-        // console.log(addUser, editUser);
-        console.log(addUser, editUser);
         if (addUser) {
           const users = userData.put({
             id: allUsers?.length + 1,
@@ -137,12 +108,10 @@ const Employees = () => {
                 : null,
           });
 
-          console.log("add");
           users.onsuccess = (query) => {
             tx.oncomplete = function () {
               db.close();
             };
-            // alert("User adde/d!");
             setOpen(false);
             setAddUser(false);
             getAllData();
@@ -163,7 +132,6 @@ const Employees = () => {
                 ? dayjs(selectedToDate).format("DD MMM YYYY")
                 : null,
           });
-          console.log("edit");
 
           users.onsuccess = (query) => {
             tx.oncomplete = function () {
@@ -201,6 +169,7 @@ const Employees = () => {
         tx.oncomplete = function () {
           db.close();
         };
+        setOpen(false);
         alert("User deleted!");
         getAllData();
       };
@@ -221,23 +190,37 @@ const Employees = () => {
       ) : (
         ""
       )}
-      {allUsers
-        ?.filter((i) => i.toDate == null)
-        ?.map((item) => (
-          <SwipeCard
-            key={item.id}
-            item={item}
-            onDelete={handleDelete}
-            setOpen={setOpen}
-            setFormValues={setFormValues}
-            setSelectedUser={setSelectedUser}
-            setEditUser={setEditUser}
-            setSelectedFromDate={setSelectedFromDate}
-            setSelectedToDate={setSelectedToDate}
-            selectedFromDate={selectedFromDate}
-            selectedToDate={selectedToDate}
-          />
-        ))}
+      {allUsers.length ? (
+        allUsers
+          ?.filter((i) => i.toDate == null)
+          ?.map((item) => (
+            <SwipeCard
+              key={item.id}
+              item={item}
+              onDelete={handleDelete}
+              setOpen={setOpen}
+              setFormValues={setFormValues}
+              setSelectedUser={setSelectedUser}
+              setEditUser={setEditUser}
+              setSelectedFromDate={setSelectedFromDate}
+              setSelectedToDate={setSelectedToDate}
+              selectedFromDate={selectedFromDate}
+              selectedToDate={selectedToDate}
+            />
+          ))
+      ) : (
+        <div>
+          <Row>
+            <Col
+              md={12}
+              className="d-flex justify-content-center align-items-center"
+              style={{ height: "90vh" }}
+            >
+              <h5 className="text-muted">No Records Found</h5>
+            </Col>
+          </Row>
+        </div>
+      )}
 
       {allUsers?.filter((i) => i.toDate !== null || i.toDate !== "Invalid Date")
         .length ? (
@@ -304,6 +287,8 @@ const Employees = () => {
           selectedToDate={selectedToDate}
           setSelectedToDate={setSelectedToDate}
           addUser={addUser}
+          handleDelete={handleDelete}
+          selectedUser={selectedUser}
         />
       )}
     </div>

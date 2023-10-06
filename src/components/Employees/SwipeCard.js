@@ -90,8 +90,8 @@ const SwipeCard = ({
                       name: item.name,
                       role: item.role,
                     });
-                    setSelectedFromDate(item.fromDate);
-                    setSelectedToDate(item.toDate);
+                    setSelectedFromDate(new Date(item.fromDate));
+                    setSelectedToDate(new Date(item.toDate));
                     setSelectedUser(item);
                     setEditUser(true);
                   }}

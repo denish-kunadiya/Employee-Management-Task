@@ -8,25 +8,23 @@ const idb =
 export const insertDataInIndexedDb = () => {
   //check for support
   if (!idb) {
-    console.log("This browser doesn't support IndexedDB");
+    alert("This browser doesn't support IndexedDB");
     return;
   }
 
   const request = idb.open("Employee", 1);
 
   request.onerror = function (event) {
-    console.error("An error occurred with IndexedDB");
+    alert("An error occurred with IndexedDB");
     console.error(event);
   };
 
   request.onupgradeneeded = function (event) {
-    console.log(event);
     const db = request.result;
 
     if (!db.objectStoreNames.contains("userData")) {
       db.createObjectStore("userData", { keyPath: "id" });
     }
-    console.log("db.objectStoreNames", db.objectStoreNames);
   };
 
   request.onsuccess = function () {

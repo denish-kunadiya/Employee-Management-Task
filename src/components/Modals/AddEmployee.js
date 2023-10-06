@@ -24,6 +24,7 @@ import { Col, Form, InputGroup, Row } from "react-bootstrap";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 import ToDateCalendar from "../Employees/ToDateCalendar";
 import SouthIcon from "@mui/icons-material/South";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -40,6 +41,8 @@ const AddEmployee = ({
   selectedToDate,
   setSelectedToDate,
   addUser,
+  handleDelete,
+  selectedUser,
 }) => {
   const handleChange = (e) => {
     setFormValues({
@@ -47,7 +50,6 @@ const AddEmployee = ({
       [e.target.name]: e.target.value,
     });
   };
-  console.log("formValues", formValues);
 
   return (
     <div>
@@ -61,13 +63,20 @@ const AddEmployee = ({
         fullWidth
         fullScreen="lg"
       >
-        <DialogTitle>
+        <DialogTitle className="d-flex justify-content-between align-items-center">
           <Typography>
             {!formValues.name
               ? "Add Employee Details"
               : "Edit Employee Details"}
           </Typography>
-          <Typography></Typography>
+          {formValues.name && (
+            <Typography>
+              <DeleteOutlineIcon
+                sx={{ cursor: "pointer" }}
+                onClick={() => handleDelete(selectedUser.id)}
+              />
+            </Typography>
+          )}
         </DialogTitle>
         <DialogContent sx={{ height: "80vh" }}>
           <Box
@@ -128,6 +137,7 @@ const AddEmployee = ({
               <CustomCalendarDesing
                 selectedFromDate={selectedFromDate}
                 setSelectedFromDate={setSelectedFromDate}
+                selectedUser={selectedUser}
               />
             </div>
             <div class="col-12 col-md-1">
@@ -146,6 +156,7 @@ const AddEmployee = ({
               <ToDateCalendar
                 selectedToDate={selectedToDate}
                 setSelectedToDate={setSelectedToDate}
+                selectedUser={selectedUser}
               />
             </div>
           </div>
