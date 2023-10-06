@@ -255,13 +255,17 @@ const Employees = () => {
         ""
       )}
       <Toolbar>
-        <Typography
-          position="fixed"
-          sx={{ top: "auto", bottom: 20, left: 10, color: "#949C9E" }}
-          // className="text-muted"
-        >
-          Swipe left to delete
-        </Typography>
+        {allUsers.length ? (
+          <Typography
+            position="fixed"
+            sx={{ top: "auto", bottom: 20, left: 10, color: "#949C9E" }}
+            // className="text-muted"
+          >
+            Swipe left to delete
+          </Typography>
+        ) : (
+          ""
+        )}
         <Box position="fixed" sx={{ top: "auto", bottom: 50, right: 70 }}>
           <StyledFab color="primary" aria-label="add">
             <AddIcon
