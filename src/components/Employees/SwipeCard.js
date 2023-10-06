@@ -83,7 +83,11 @@ const SwipeCard = ({
             <Item key={item.id + 3}>
               <div style={{ flex: "1 0 100%" }}>
                 <span
-                  style={{ margin: "0.2rem", cursor: "pointer" }}
+                  style={{
+                    margin: "0.2rem",
+                    cursor: "pointer",
+                    fontSize: "1.5rem",
+                  }}
                   onClick={() => {
                     setOpen(true);
                     setFormValues({
@@ -99,12 +103,12 @@ const SwipeCard = ({
                   {item.name}
                 </span>
                 <br />
-                <span style={{ fontSize: "0.8rem", color: "gray" }}>
+                <span style={{ fontSize: "0.8rem", color: "#949C9E" }}>
                   {item.role}
                 </span>
                 <br />
-                <span style={{ fontSize: "0.8rem", color: "gray" }}>
-                  {item.fromDate}
+                <span style={{ fontSize: "0.8rem", color: "#949C9E" }}>
+                  From {item.fromDate}
                 </span>
               </div>
               <DeleteButton>

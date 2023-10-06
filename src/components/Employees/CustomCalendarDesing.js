@@ -190,7 +190,7 @@ export default function CustomCalendarDesing({
                     flexDirection: "column",
                   }}
                 >
-                  <div style={{ maxWidth: 200, margin: "0 auto" }}>
+                  <div style={{ maxWidth: 250, margin: "0 auto" }}>
                     <ArrowLeftIcon
                       onClick={decreaseMonth}
                       sx={{
@@ -200,7 +200,16 @@ export default function CustomCalendarDesing({
                       }}
                     />
 
-                    <span>{dayjs(date).format("MMMM YYYY")}</span>
+                    <span
+                      style={{
+                        color: "#000",
+                        fontWeight: "bold",
+                        margin: "0 15px 0 15px",
+                        width: "100px",
+                      }}
+                    >
+                      {dayjs(date).format("MMMM YYYY")}
+                    </span>
 
                     <ArrowRightIcon
                       onClick={increaseMonth}

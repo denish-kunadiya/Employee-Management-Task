@@ -153,18 +153,26 @@ const ToDateCalendar = ({
                       onClick={decreaseMonth}
                       sx={{
                         color: "grey",
-                        margin: "0 .6rem",
+                        margin: "0 .4rem",
                         fontSize: "2rem",
                       }}
                     />
 
-                    <span>{dayjs(date).format("MMMM YYYY")}</span>
+                    <span
+                      style={{
+                        color: "#000",
+                        fontWeight: "bold",
+                        // margin: "0 15px 0 15px",
+                      }}
+                    >
+                      {dayjs(date).format("MMMM YYYY")}
+                    </span>
 
                     <ArrowRightIcon
                       onClick={increaseMonth}
                       sx={{
                         color: "grey",
-                        margin: "0 .6rem",
+                        margin: "0 .4rem",
                         fontSize: "2rem",
                       }}
                     />
